@@ -9,7 +9,7 @@ services:
     volumes:
       - ./code:/code
       - ./code/instance/:/code/instance/
-    command: python market.py
+    command: python run.py
   sqlite3:
     image: nouchka/sqlite3
     stdin_open: true
