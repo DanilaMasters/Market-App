@@ -1,6 +1,6 @@
 from flask import render_template
 from market import app
-from market.models import Item
+from market.models import Item, User
 
 
 @app.route('/')

@@ -10,6 +10,8 @@ services:
       - ./code:/code
       - ./code/instance/:/code/instance/
     command: python run.py
+    depends_on:
+      - sqlite3
   sqlite3:
     image: nouchka/sqlite3
     stdin_open: true
