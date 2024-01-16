@@ -6,4 +6,6 @@ services:
       context: .
     ports:
       - "8000:8000"
-    command: flask --app market run
+    command: python3 code/market.py
+    volumes:
+      - ./code:/code/code
