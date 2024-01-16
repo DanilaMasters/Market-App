@@ -6,6 +6,13 @@ services:
       context: .
     ports:
       - "8000:8000"
-    command: python3 code/market.py
     volumes:
-      - ./code:/code/code
+      - ./code:/code
+      - ./code/instance/:/code/instance/
+    command: python market.py
+  sqlite3:
+    image: nouchka/sqlite3
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./code/instance/:/root/db/
