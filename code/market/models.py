@@ -13,9 +13,9 @@ class User(db.Model):
     def password(self):
         return self.password
     
-    @property.setter
+    @password.setter
     def password(self, plain_text_password):
-        return bcrypt.generate_password_hashed(plain_text_password).utf8()
+        self.password_hash = bcrypt.generate_password_hash(plain_text_password).decode('utf-8')
 
 
 class Item(db.Model):

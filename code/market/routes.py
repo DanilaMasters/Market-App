@@ -1,6 +1,6 @@
 from flask import render_template, url_for, redirect, flash
 
-from market.forms import RegisterForm
+from market.forms import LoginForm, RegisterForm
 from market import app, db
 from market.models import Item, User
 
@@ -26,7 +26,7 @@ def about(username):
 def register_page():
     form = RegisterForm()
     if form.validate_on_submit():
-        user_to_create = User(name=form.username.data, email=form.email.data, password_hash=form.password1.data)
+        user_to_create = User(name=form.username.data, email=form.email.data, password=form.password1.data)
         db.session.add(user_to_create)
         db.session.commit()
         return redirect(url_for('market_page'))
@@ -34,3 +34,9 @@ def register_page():
         for error in form.errors.values():
             flash(f'There was an error with creating a user: {error}', category='danger')
     return render_template('register.html', form=form)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    return render_template('login.html', form=form)

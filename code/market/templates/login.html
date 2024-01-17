@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock title %}
+
+{% block content %}
+<body class="text-center">
+    <div class="container">
+        <form method="post">
+            {{ form.hidden_tag() }}
+            {% for field in form if field.name != 'csrf_token' %}
+                <br>
+                {% if field.name == 'submit' %}
+                    {{ field(class='btn btn-lg btn-block btn-primary') }}
+                {% else %}
+                    {{ field.label }}
+                    {{ field(class='form-control') }}
+                {% endif %}
+            {% endfor %}
+        </form>
+        <p>Are you new? <a href="{{ url_for('register_page') }}">Sign Up</a></p>
+    </div>
+</body>
+{% endblock content %}
