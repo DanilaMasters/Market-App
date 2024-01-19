@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from wtforms import IntegerField
 from wtforms.fields.simple import StringField, PasswordField, SubmitField
 from wtforms.validators import Length, Email, EqualTo, DataRequired
 
@@ -19,3 +20,11 @@ class LoginForm(FlaskForm):
 
 class PurchaseForm(FlaskForm):
     purchase_button = SubmitField(label='Submit', validators=[])
+
+
+class AddItemForm(FlaskForm):
+    name = StringField(label='Item Name', validators=[DataRequired()])
+    price = IntegerField(label='Price', validators=[DataRequired()])
+    barcode = StringField(label='Item Barcode', validators=[DataRequired()])
+    description = StringField(label='Description', validators=[DataRequired()])
+    submit = SubmitField(label="Submit")

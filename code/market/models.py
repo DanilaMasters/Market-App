@@ -13,6 +13,7 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(length=60), nullable=False)
     budget = db.Column(db.Integer(), nullable=False, default=1000)
     items = db.relationship('Item', backref='owned_user')
+    is_superuser = db.Column(db.Boolean(), default=False, nullable=True)
 
     @property
     def password(self):
@@ -31,6 +32,10 @@ class User(db.Model, UserMixin):
     
     def can_purchase(self, item_price):
         return item_price <= self.budget
+    
+    @property
+    def _is_superuser(self):
+        return self.is_superuser
 
 class Item(db.Model):
     id = db.Column(db.Integer(), primary_key=True)

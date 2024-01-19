@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Item{% endblock title %}
+
+{% block content %}
+<body class="">
+    <div class="container">
+        <form method="post">
+            {{ form.hidden_tag() }}
+            {% for field in form if field.name != 'csrf_token' %}
+                <br>
+                {% if field.name == 'submit' %}
+                    {{ field(class='btn btn-lg btn-block btn-primary') }}
+                {% else %}
+                    {{ field.label }}
+                    {{ field(class='form-control') }}
+                {% endif %}
+            {% endfor %}
+        </form>
+    </div>
+</body>
+{% endblock content %}

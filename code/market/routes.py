@@ -1,6 +1,6 @@
 from flask import render_template, request, url_for, redirect, flash
 
-from market.forms import LoginForm, PurchaseForm, RegisterForm
+from market.forms import AddItemForm, LoginForm, PurchaseForm, RegisterForm
 from market import app, db
 from market.models import Item, User
 
@@ -27,8 +27,10 @@ def market_page():
             flash(f'You have bought an object', category='success')
         else:
             flash(f'You have got not enough money to buy an object', category='danger')
-    items = Item.query.filter_by(owner=None)
-    owned_items = Item.query.filter_by(owner=current_user.id)
+        return redirect(url_for('market_page'))
+    elif request.method == 'GET':
+        items = Item.query.filter_by(owner=None)
+        owned_items = Item.query.filter_by(owner=current_user.id)
     return render_template('market.html', items=items, purchase_form=purchase_form, owned_items=owned_items)
 
 
@@ -69,3 +71,15 @@ def logout():
     logout_user()
     flash('You are logged out!', category='info')
     return redirect(url_for('home_page'))
+
+@app.route('/add_items', methods=['POST', 'GET'])
+def add_items_page():
+    form = AddItemForm()
+    if form.validate_on_submit():
+        item = Item(name=form.name.data, price=form.price.data, barcode=form.barcode.data, description=form.description.data)
+        if item:
+            db.session.add(item)
+            db.session.commit()
+            flash('Item successfully added!', category='success')
+            return redirect(url_for('market_page'))
+    return render_template('add_item.html', form=form)
