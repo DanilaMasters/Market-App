@@ -28,6 +28,9 @@ class User(db.Model, UserMixin):
     @property
     def prettier_budget(self):
         return f'{self.budget}$'
+    
+    def can_purchase(self, item_price):
+        return item_price <= self.budget
 
 class Item(db.Model):
     id = db.Column(db.Integer(), primary_key=True)

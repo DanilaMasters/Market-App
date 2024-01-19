@@ -16,4 +16,6 @@ class LoginForm(FlaskForm):
     password = StringField(label='Password', validators=[DataRequired()])
     submit = SubmitField(label="Submit")
 
-    
+
+class PurchaseForm(FlaskForm):
+    purchase_button = SubmitField(label='Submit', validators=[])
