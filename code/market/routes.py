@@ -4,6 +4,8 @@ from market.forms import LoginForm, RegisterForm
 from market import app, db
 from market.models import Item, User
 
+from flask_login import login_required, login_user, logout_user
+
 
 @app.route('/')
 @app.route('/home')
@@ -12,6 +14,7 @@ def home_page():
 
 
 @app.get('/market')
+@login_required
 def market_page():
     items = Item.query.all()
     return render_template('market.html', items=items)
@@ -39,4 +42,18 @@ def register_page():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    if form.validate_on_submit():
+        atempted_user = User.query.filter_by(name=form.username.data).first()
+        if atempted_user and atempted_user.check_password_correction(atempted_password=form.password.data):
+            login_user(atempted_user)
+            flash('You are logged in!', category='success')
+            return redirect(url_for('market_page'))
+        else:
+            flash('Username and pasword do not match! Please try again', category='danger')
     return render_template('login.html', form=form)
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    flash('You are logged out!', category='info')
+    return redirect(url_for('home_page'))
